@@ -9,7 +9,7 @@ class Persona {
     constructor(nombre, edad, puesto, salario) {
       super(nombre, edad);
       this.puesto = puesto;
-      this.salario = salario;
+      this.salario = salario;     
     }
   }
   
@@ -19,30 +19,39 @@ class Persona {
     let nombre = prompt("Ingrese el nombre del empleado:");
     let noEsletra = true;
     let noEsNum = true;
-    if (!/^[a-zA-Z]+/.test(nombre)) {
+    if (!/^[a-zA-Z]+/.test(nombre) ) {
       noEsletra = false;      
     }
     let edad = prompt("Ingrese la edad del empleado:");   
     let salario = prompt("Ingrese el salario del empleado:");
-    let puesto = prompt("Ingrese el número de puesto del empleado:");
+    let puesto = prompt("Ingrese el número de puesto del empleado:");    
     if (isNaN(edad) || isNaN(salario) || isNaN(puesto) ) {
       noEsNum = false;
     }    
     if (noEsNum && noEsletra){
-      let empleadoExistente = empleados.find(empleado => empleado.nombre === nombre);
-    if (empleadoExistente) {
-      console.log("Empleado no agregado correctamente. Ya existe un empleado con ese nombre.\n");
-    } else {
-      let empleado = new Empleado(nombre, edad, puesto, salario);      
-      empleados.push(empleado);
-      console.log("Empleado agregado correctamente.\n");
-    }
+      if(edad > 0 && salario > 0 && puesto > 0){
+        let empleadoExistente = empleados.find(empleado => empleado.puesto === puesto);
+        if (empleadoExistente) {
+          console.log("Empleado no agregado correctamente. Ya existe un empleado con ese ese puesto.\n");
+          alert("Empleado no agregado correctamente. Ya existe un empleado con ese puesto.\n");
+        } else {          
+          let empleado = new Empleado(nombre, edad, puesto, salario);      
+          empleados.push(empleado);
+          console.log("Empleado agregado correctamente.\n");
+          alert("Empleado agregado correctamente.\n");
+        }
+      } else{
+        console.log("Empleado no agregado correctamente. Los valores numéricos deben ser mayores de 0.\n");
+        alert("Empleado no agregado correctamente. Los valores numéricos deben ser mayores de 0.\n");
+      }
     }
     else if(!noEsletra){
       console.log("Empleado no agregado correctamente. El nombre solo puede contener letras.\n");
+      alert("Empleado no agregado correctamente. El nombre solo puede contener letras.\n");
     }
     else if(!noEsNum){
       console.log("Empleado no agregado correctamente. Solo el nombre solo puede contener letras.\n");
+      alert("Empleado no agregado correctamente. Solo el nombre solo puede contener letras.\n");
     }
     
   }
@@ -52,14 +61,17 @@ class Persona {
       console.log("No hay empleados\n");      
     }else{
     let nombre = prompt("Ingrese el nombre del empleado cuyo puesto desea actualizar:");  
-    let empleadoEncontrado = empleados.find(empleado => empleado.nombre === nombre ); 
+    let puesto = prompt("Ingrese el puesto actual del empleado:");
+    let empleadoEncontrado = empleados.find(empleado => empleado.nombre === nombre && empleado.puesto === puesto);    
         
     if (empleadoEncontrado) {
       let nuevoPuesto = prompt("Ingrese el nuevo número de puesto del empleado:");
       empleadoEncontrado.puesto = nuevoPuesto;
       console.log("Puesto actualizado correctamente.\n");
+      alert("Puesto actualizado correctamente.\n");
     } else {
       console.log("Empleado no encontrado.\n");
+      alert("Empleado no encontrado.\n");
     }
    }
   }
@@ -67,11 +79,12 @@ class Persona {
   function listarEmpleados() {
     console.log("Lista de empleados:\n");
     if (empleados.length == 0){
-      console.log("No hay empleados\n");      
+      console.log("No hay empleados\n");   
+      alert("No hay empleados\n");   
     }else{
       empleados.forEach(empleado => {
         console.log(`Nombre: ${empleado.nombre}, Edad: ${empleado.edad}, Puesto: ${empleado.puesto}, Salario: ${empleado.salario}`);      
-      });
+      });      
     }
     
     console.log("\n");
@@ -87,7 +100,7 @@ class Persona {
   let opcion;
   do {
     mostrarMenu();
-    opcion = prompt("1. Agregar empleado.\n2. Actualizar puesto de empleado.\n3. Listar empleados.\n\nSeleccione una opción (1-4):");
+    opcion = prompt("1. Agregar empleado.\n2. Actualizar puesto de empleado.\n3. Listar empleados.\n4. Salir\n\nSeleccione una opción (1-4):");
     switch (opcion) {
       case "1":
         agregarEmpleado();
